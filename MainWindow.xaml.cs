@@ -18,31 +18,35 @@ using System.Windows.Shapes;
 
 namespace ComputerWpf
 {
+>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            LoadData();
         }
-        private void LoadData()
+
+        private void OPRendszer_Lekérdezés()
         {
             string connectionString = "Server=localhost;Database=computer;Uid=root;Password=;SslMode=None";
 
-            string query = $"SELECT `Id`, `Name` FROM `osystem`;";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new MySqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand(query, connection);
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
+                    string sql = $"SELECT * FROM `osystem`;";
+
+                    MySqlCommand cmd = new MySqlCommand(sql, connection);
+
+                    MySqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
                     {
-                        sqlListBox.Items.Add(reader["ColName"].ToString());
+                        sqlListBox.Items.Add(dr["id"].ToString() + ".: " + dr["name"].ToString() + ", " + dr["CreatedTime"].ToString());
                     }
-                    reader.Close();
+
+                    connection.Close();
                 }
                 catch (Exception ex)
                 {
@@ -50,9 +54,52 @@ namespace ComputerWpf
                 }
             }
         }
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
+        private void Comp_Lekérdezés()
+        {
+            string connectionString = "Server=localhost;Database=computer;Uid=root;Password=;SslMode=None";
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string sql = $"SELECT * FROM `comp`;";
+
+                    MySqlCommand cmd = new MySqlCommand(sql, connection);
+
+                    MySqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        sqlListBox.Items.Add(dr["id"].ToString() + ".: " + dr["Brand"].ToString() + ", " + dr["Type"].ToString() + ", " + dr["Display"].ToString() + ", " + dr["Memory"].ToString() + ", " + dr["CreatedTime"].ToString() + ", " + dr["OsId"].ToString());
+                    }
+
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hiba történt: {ex.Message}");
+                }
+            }
+        }
+
+        private void Comp_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Számítógépek");
+            Comp_Lekérdezés();
+
+        }
+
+        private void OPS_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("OPrendszerek");
+            OPRendszer_Lekérdezés();
+        }
+
+        private void Kilepes_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

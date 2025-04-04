@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <ListBox x:Name="sqlListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,666,301"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="290,51,0,0" VerticalAlignment="Top"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="310,133,0,0" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>

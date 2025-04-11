@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 
 namespace ComputerWpf
 {
->
+
     public partial class MainWindow : Window
     {
         public MainWindow()
